@@ -1,0 +1,19 @@
+.container{
+    margin:auto;
+}
+.tong{
+    text-align: center;
+    
+}
+.dau{
+    float:left;
+    color:#808080;
+}
+.cuoi{
+    float:right;
+    color:#808080
+}
+.fa-solid fa-magnifying-glass{
+    float:right;
+    color:#808080
+}

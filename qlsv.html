@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case study
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+<style>
+    #color {
+        color: aliceblue;
+    }
+
+    #head {
+        margin: auto;
+        text-align: center;
+        max-width: 100%;
+
+    }
+
+    h1 {
+        background-color: rgb(192, 216, 232);
+
+    }
+
+    #conten {
+        max-width: 100%;
+    }
+
+    body {
+        background: radial-gradient(rgb(178, 240, 54), rgb(243, 224, 227), white)
+    }
+
+    #left {
+        float: left;
+    }
+
+    form {
+        margin-top: 50px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #right {
+        float: right;
+        padding-right: 100px;
+
+
+    }
+
+    #clear {
+        clear: both;
+    }
+
+    .main {
+        max-width: 100%;
+        height: 290px;
+    }
+
+    .main2 {
+        max-width: 100%;
+        height: 1000px;
+    }
+</style>
+
+<body onload="render();">
+    <div id="head">
+        <h1>Quản lý các học viên mới khóa 14 chương trình đào tạo kĩ sư công nghệ thông tin IBS</h1>
+    </div>
+    <div class="main">
+        <div id="conten">
+            <form>
+                <div id="left">
+                    <table>
+                        <tr>
+                            <td><label for="">Mã sinh viên</label></td>
+                            <td><input type="Number" id="id" placeholder="Mời nhập Mã sinh viên  "
+                                    style="width: 500px;" min="1"></td>
+                        </tr>
+                        <tr>
+                            <td> <label for="">Họ và tên </label></td>
+                            <td><input type="text" id="name" placeholder="Mời nhập tên " style="width: 500px;"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="">Tuổi</label></td>
+                            <td> <input type="Number" id="age" min="17" placeholder="Mời nhập tuổi "
+                                    style="width: 500px;"></td>
+                        </tr>
+                        <tr>
+                        <tr>
+                            <td><label for="">Email</label></td>
+                            <td> <input type="email" id="email" placeholder="Mời nhập email " style="width: 500px;">
+                            </td>
+                        </tr>
+                        <td><label for="">Lớp</label></td>
+                        <td><select id="class">
+                                <option value="">-chọn lớp -</option>
+                                <option value="IBSK1D1">IBSK1D1</option>
+                                <option value="IBSK1D2">IBSK1D2</option>
+                                <option value="Khác">Khác</option>
+                            </select></td>
+                        </tr>
+                        </tr>
+                        <td><label for="">Giới tính </label></td>
+                        <td>
+                            <select id="sex">
+                                <option value="">-chọn giới tính -</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+            <div>
+                <button class="btn btn-outline-primary" onclick="getAdd();">Nhập dữ liệu </button>
+            </div>
+            <div id="right">
+                <button onclick="search()" class="fa-solid fa-magnifying-glass" style="font-size: 20px;"></button>
+                <input type="text" id="SearchItem" style="width: 400px;">
+            </div>
+
+            <div id="clear"></div>
+        </div>
+    </div>
+    <div class="main2">
+        <div id="footer">
+            <table class="table table-danger table-striped" id="render">
+                <tr>
+                    <th>Mã sinh viên </th>
+                    <th>Họ và tên </th>
+                    <th>Lớp</th>
+                    <th>Giới tính</th>
+                    <th>Hành động</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+    var data = [];
+    function getAdd() {
+        var item_sex = document.getElementById("sex").value;
+        var item_email = document.getElementById("email").value;
+        var item_id = document.getElementById("id").value;
+        var item_name = document.getElementById("name").value;
+        var item_age = document.getElementById("age").value;
+        var item_class = document.getElementById("class").value;
+        let DuLieu = localStorage.getItem("DuLieu") ? JSON.parse(localStorage.getItem("DuLieu")) : []
+        if (item_id == "" || item_name == "" || item_age == "" || item_class == "" || item_sex == "" || item_email == "") {
+            alert("Thông báo người dùng , số liệu bạn nhập vào không đủ để lưu trữ thông tin");
+            alert("yêu cầu nhập đầy đủ")
+        } else {
+            var obj = {
+                Id: item_id,
+                Name: item_name,
+                Age: item_age,
+                Class: item_class,
+                Email: item_email,
+                Sex: item_sex
+            }
+            localStorage.setItem("DuLieu", JSON.stringify(obj));
+
+
+            let index = data.findIndex((c) => c.Id == obj.Id)
+            if (index >= 0) {
+                data.splice(index, 1, obj)
+            } else {
+                data.push(obj)
+            }
+            render()
+            clear()
+        }
+    }
+    function render() {
+        var DuLieu = JSON.parse(localStorage.getItem("DuLieu"))
+        console.log(DuLieu);
+
+        table = `<tr>
+                                <th>Mã sinh viên</th>
+                                <th>Họ và tên</th>
+                                <th>Lớp</th>
+                                <th>Giới tính</th>
+                                <th>Hành động</th>
+                                </tr>`
+
+        for (let i = 0; i < data.length; i++) {
+            table += `<tr>
+                                <th>${data[i].Id}</th>
+                                <th>${data[i].Name}</th>
+                                <th>${data[i].Class}</th>
+                                <th>${data[i].Sex}</th>
+                                <th>
+                                    <button  class="fa-solid fa-trash" onclick="deleteItem(${data[i].Id})"></button>
+                                    <button class="fa-solid fa-pen-to-square" onclick="editItem(${data[i].Id})"></button></th>
+                                </tr>`
+        }
+
+        document.getElementById("render").innerHTML = table;
+    }
+    function clear() {
+        document.getElementById("id").value = "";
+        document.getElementById("name").value = "";
+        document.getElementById("age").value = "";
+        document.getElementById("class").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("sex").value = "";
+
+    }
+
+
+
+    function deleteItem(x) {
+
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].Id == x) {
+                data.splice(i, 1)
+                render()
+            }
+
+        }
+        alert("xóa thành công");
+    }
+    function editItem(x) {
+        alert("bạn có chắc muốn thay đổi thông tin");
+        alert("Lưu ý không được thay đổi mã sinh viên , việc thay đổi 'Mã sinh viên' sẽ tạo ra một học viên mới ");
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].Id == x) {
+
+                document.getElementById("id").value = data[i].Id;
+                document.getElementById("name").value = data[i].Name;
+                document.getElementById("age").value = data[i].Age;
+                document.getElementById("class").value = data[i].Class;
+                document.getElementById("email").value = data[i].Email;
+                document.getElementById("sex").value = data[i].Sex;
+            }
+
+        }
+
+
+
+
+    }
+
+
+
+    function search() {
+        var search = document.getElementById("SearchItem").value;
+        var list = data;
+        var kq = [];
+        if (search) {
+            for (let i = 0; i < list.length; i++) {
+                var str = list[i].Id;
+
+                if (str.includes(search)) {
+                    var itemSearch = {
+                        id: list[i].Id,
+                        name: list[i].Name,
+                        age: list[i].Age,
+                        class: list[i].Class,
+                        sex: list[i].Sex,
+                        email: list[i].Email
+
+                    }
+                    kq.push(itemSearch);
+                }
+                alert(kq);
+                if (search === list[i].Id) {
+                    alert("Tên học viên " + list[i].Name + " - " + " mã sinh viên " + list[i].Id + " - " + " độ tuổi " + list[i].Age + " - " + " thuộc lớp " + list[i].Class + " - " + " giới tính " + list[i].Sex + " - " + " email " + list[i].Email);
+                } else if (search == "" || SearchItem == ""){
+                    alert("Không tìm thấy học viên");
+                }
+                else(
+                    alert("Không tìm thấy học viên")
+                )
+
+
+            }
+        }
+
+    }
+</script>
+
+</html>
